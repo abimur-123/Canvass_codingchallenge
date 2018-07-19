@@ -10,7 +10,7 @@ Models used can be found in this [folder](https://github.com/abimur-123/Canvass_
 ### Assumptions
 
 1. For few turbines there are readings beyond today's date. For the interest of this analysis, I am going to assume these are valid readings
-2. Dealing with NAs in the dataset - Mean value imputation?
+2. Dealing with NAs in the dataset - removing NAs. 
 3. Date range isn't continuous. Should I assume that the unit does not fail in that period, or, should I be ignoring the gap in the range of days? (right censored data)
 4. If the window length of 40 isn't satisfied, padding with 0s. This assumes that there isn't going to be a failure. `Check if padding with another number such as -1 helps with predictions.`
 
@@ -53,6 +53,7 @@ Models used can be found in this [folder](https://github.com/abimur-123/Canvass_
 
 1. No break in 1hour observation of data of the parameters. Fetching the 6th record to model pollution 6 hours later (ease of analysis)
 2. There are 365 rows with negative reading for pollution. Although this seems like an anomaly, ignoring it for the purpose of the analysis due to lack of domain knowledge. *Try removing these observations and predicting*
+3. Missing values have been imputed with their mean.
 
 ### Ideas
 
