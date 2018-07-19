@@ -5,6 +5,8 @@ Answers to the challenge
 
 Link for this notebook can be found [here](https://github.com/abimur-123/Canvass_codingchallenge/blob/master/scripts/Task1.ipynb)
 
+Models used can be found in this [folder](https://github.com/abimur-123/Canvass_codingchallenge/blob/master/models), prefixed with `Task1`.
+
 ### Assumptions
 
 1. For few turbines there are readings beyond today's date. For the interest of this analysis, I am going to assume these are valid readings
@@ -20,9 +22,32 @@ Link for this notebook can be found [here](https://github.com/abimur-123/Canvass
 4. Kaplan meir estimates -- survival analysis based on failure events
 
 
+Code to load LSTM - keras
+
+```
+from keras.models import model_from_json
+# load json and create model
+json_file = open(<file_name>.json, 'r')
+loaded_model_json = json_file.read()
+json_file.close()
+loaded_model = model_from_json(loaded_model_json)
+# load weights into new model
+loaded_model.load_weights(<file_name>.h5)
+print("Loaded model from disk")
+```
+
+Code to load other models
+```
+from sklearn.externals import joblib
+
+clf = joblib.load('../models/<file_name>.pkl') 
+```
+
 ## Task 2
 
 Link for this notebook can be found [here](https://github.com/abimur-123/Canvass_codingchallenge/blob/master/scripts/Task2.ipynb)
+
+Models used can be found in this [folder](https://github.com/abimur-123/Canvass_codingchallenge/blob/master/models), prefixed with `Task2`.
 
 ### Assumptions 
 
