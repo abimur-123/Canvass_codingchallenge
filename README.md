@@ -10,7 +10,8 @@ Models used can be found in this [folder](https://github.com/abimur-123/Canvass_
 ### Assumptions
 
 1. For few turbines there are readings beyond today's date. For the interest of this analysis, I am going to assume these are valid readings
-2. Dealing with NAs in the dataset - removing NAs. 
+2. Dealing with NAs in the dataset - median imputation.
+3. Cost for checking failures in wind turbines is lower than cost for failing to check for malfunctions/failures. False positives might not be a bad option in this case.
 3. Date range isn't continuous. Assuming the units do not fail in that period.
 4. If the window length of 40 isn't satisfied, padding with 0s. This assumes that there isn't going to be a failure (although right censored data). `Check if padding with another number such as -1 helps with predictions .`
 
@@ -22,26 +23,20 @@ Models used can be found in this [folder](https://github.com/abimur-123/Canvass_
 4. Kaplan meir estimates -- survival analysis based on failure events
 
 
-Code to load LSTM - keras
+To run best performing model:
 
-```
-from keras.models import model_from_json
-# load json and create model
-json_file = open(<file_name>.json, 'r')
-loaded_model_json = json_file.read()
-json_file.close()
-loaded_model = model_from_json(loaded_model_json)
-# load weights into new model
-loaded_model.load_weights(<file_name>.h5)
-print("Loaded model from disk")
-```
 
-Code to load other models
+Example use case:
 ```
-from sklearn.externals import joblib
+from Task1 import RandomForestWrapper
+import pandas as pd
 
-clf = joblib.load('../models/<file_name>.pkl') 
+t1 = RandomForestWrapper()
+dummy_data = pd.read_csv('../data/forecasting_dataset.csv', parse_dates=[['date', 'time']]).sample(10)
+dt = dummy_data.dropna().drop(['date_time','y'],axis = 1)
+t1.predict(dt)
 ```
+Where `dt` is the held out dataset
 
 ## Task 2
 
@@ -61,3 +56,18 @@ Models used can be found in this [folder](https://github.com/abimur-123/Canvass_
 2. Compared various boosting (ensemble algorithms) as I'm dealing with a small dataset. 
 3. Looking at adjusted $R^2$ along with mean square error to evaluate model performance. Tune best performing model.
 4. PCA shows that 5 features can explain close to 90% of the variance in the dataset. Perform PCA to reduce number of features for analysis. 
+
+To run best performing model on the held out dataset:
+
+
+Example use case:
+```
+from Task2 import XGBoostWrapper
+import pandas as pd
+
+t2 = XGBoostWrapper()
+dummy_data = pd.read_csv('../data/forecasting_dataset.csv', parse_dates=[['date', 'time']]).sample(10)
+dt = dummy_data.dropna().drop(['date_time','y'],axis = 1)
+t2.predict(dt)
+```
+Where `dt` is the held out dataset
